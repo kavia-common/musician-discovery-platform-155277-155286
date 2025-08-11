@@ -28,8 +28,29 @@ export default function ProfilePage() {
       <div className="card" style={{ gridColumn: 'span 12' }}>
         <div className="spread">
           <div className="row" style={{ gap: 12 }}>
-            <div className="avatar" style={{ width: 44, height: 44, fontSize: 16 }}>
-              {user.name?.[0]?.toUpperCase()}
+            <div
+              className="avatar"
+              style={{
+                width: 64,
+                height: 64,
+                fontSize: 18,
+                borderRadius: 14,
+                overflow: 'hidden',
+                display: 'grid',
+                placeItems: 'center',
+                background: 'var(--surface-2)',
+                border: '1px solid var(--border)',
+              }}
+            >
+              {user.profileImage ? (
+                <img
+                  src={user.profileImage}
+                  alt="Profile"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <span>{user.name?.[0]?.toUpperCase()}</span>
+              )}
             </div>
             <div>
               <div className="title">{user.name} {user.role === 'musician' ? '• Musician' : '• Restaurant'}</div>
@@ -49,6 +70,58 @@ export default function ProfilePage() {
 
       {user.role === 'musician' && (
         <>
+          {(user.demoImages?.length > 0 || user.demoVideos?.length > 0) && (
+            <>
+              <div className="section-title" style={{ gridColumn: 'span 12' }}>Media</div>
+              <div className="card" style={{ gridColumn: 'span 12' }}>
+                <div className="row" style={{ overflowX: 'auto', gap: 10 }}>
+                  {(user.demoImages || []).map((src, idx) => (
+                    <img
+                      key={`img-${idx}`}
+                      src={src}
+                      alt={`Demo ${idx + 1}`}
+                      style={{
+                        width: 220,
+                        height: 140,
+                        objectFit: 'cover',
+                        borderRadius: 10,
+                        border: '1px solid var(--border)',
+                      }}
+                    />
+                  ))}
+                  {(user.demoVideos || []).map((src, idx) =>
+                    src.startsWith('data:video') ? (
+                      <video
+                        key={`vid-${idx}`}
+                        src={src}
+                        controls
+                        style={{
+                          width: 220,
+                          height: 140,
+                          borderRadius: 10,
+                          border: '1px solid var(--border)',
+                          background: 'black',
+                        }}
+                      />
+                    ) : (
+                      <a
+                        key={`vid-${idx}`}
+                        href={src}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="badge"
+                        style={{ minWidth: 220, display: 'grid', placeItems: 'center', height: 140 }}
+                        title={src}
+                      >
+                        ▶️ Open Video
+                      </a>
+                    )
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+
           <div className="section-title" style={{ gridColumn: 'span 12' }}>Your Listings</div>
           <div className="listings" style={{ gridColumn: 'span 12' }}>
             {myListings().length === 0 ? (

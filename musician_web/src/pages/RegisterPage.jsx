@@ -85,8 +85,8 @@ export default function RegisterPage() {
         genres: selectedGenres,
       };
       await register(payload);
-      // Redirect to profile for onboarding continuation
-      navigate('/profile', { replace: true });
+      // Redirect into progressive onboarding for musicians
+      navigate('/onboarding/profile-photo', { replace: true });
     } catch (err) {
       setSubmitError(err.message || 'Failed to create account');
     } finally {

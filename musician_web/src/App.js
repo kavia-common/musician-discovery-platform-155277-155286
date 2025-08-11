@@ -11,6 +11,9 @@ import ProfilePage from './pages/ProfilePage';
 import AddListingPage from './pages/AddListingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ProfilePhotoStep from './pages/onboarding/ProfilePhotoStep';
+import DemoImagesStep from './pages/onboarding/DemoImagesStep';
+import DemoVideosStep from './pages/onboarding/DemoVideosStep';
 
 /**
  * Root application component setting theme, routes, and tab navigation.
@@ -31,8 +34,10 @@ function AppShell() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // Hide NavTabs on auth pages
-  const hideTabs = ['/login', '/register'].includes(location.pathname);
+  // Hide NavTabs on auth and onboarding pages
+  const hideTabs =
+    ['/login', '/register'].includes(location.pathname) ||
+    location.pathname.startsWith('/onboarding');
 
   return (
     <div className="app-root">
@@ -96,6 +101,32 @@ function AppShell() {
           />
           <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
           <Route path="/register" element={user ? <Navigate to="/" replace /> : <RegisterPage />} />
+
+          <Route
+            path="/onboarding/profile-photo"
+            element={
+              <ProtectedRoute>
+                <ProfilePhotoStep />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/onboarding/demo-images"
+            element={
+              <ProtectedRoute>
+                <DemoImagesStep />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/onboarding/demo-videos"
+            element={
+              <ProtectedRoute>
+                <DemoVideosStep />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

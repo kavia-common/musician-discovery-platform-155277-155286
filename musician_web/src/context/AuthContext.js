@@ -6,6 +6,7 @@ import {
   findUserByEmail,
   createUser as createUserApi,
   getUserById,
+  updateUser as updateUserApi,
 } from '../services/api';
 
 const AuthContext = createContext(null);
@@ -65,6 +66,18 @@ export function AuthProvider({ children }) {
   };
 
   // PUBLIC_INTERFACE
+  const updateMe = async (updates) => {
+    /**
+     * Update the currently authenticated user's profile and refresh local state.
+     * Returns the updated user.
+     */
+    if (!user?.id) throw new Error('No authenticated user');
+    const next = updateUserApi(user.id, updates);
+    setUser(next);
+    return next;
+  };
+
+  // PUBLIC_INTERFACE
   const logout = () => {
     /** Clear current session and user state. */
     setCurrentUserId(null);
@@ -72,7 +85,7 @@ export function AuthProvider({ children }) {
   };
 
   const value = useMemo(
-    () => ({ user, ready, error, login, logout, register }),
+    () => ({ user, ready, error, login, logout, register, updateMe }),
     [user, ready, error]
   );
 

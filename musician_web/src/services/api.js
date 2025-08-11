@@ -48,6 +48,10 @@ export function ensureSeedData() {
       genres: ['Jazz', 'Soul'],
       rate: 200,
       bio: 'Pianist and vocalist specializing in jazz standards and soulful nights.',
+      // Onboarding media fields
+      profileImage: '',
+      demoImages: [],
+      demoVideos: [],
     };
     const restaurant = {
       id: generateId('usr'),
@@ -142,10 +146,28 @@ export function createUser(data) {
     genres: Array.isArray(data.genres) ? data.genres : [],
     rate: data.rate ?? null,
     bio: data.bio || '',
+    // onboarding media
+    profileImage: '',
+    demoImages: [],
+    demoVideos: [],
   };
   users.push(user);
   write(USERS_KEY, users);
   return user;
+}
+
+// PUBLIC_INTERFACE
+export function updateUser(id, updates) {
+  /**
+   * Update a user by ID and persist to storage.
+   * Returns the updated user object.
+   */
+  const users = getAllUsers();
+  const idx = users.findIndex((u) => u.id === id);
+  if (idx === -1) throw new Error('User not found');
+  users[idx] = { ...users[idx], ...updates };
+  write(USERS_KEY, users);
+  return users[idx];
 }
 
 /**
@@ -253,7 +275,7 @@ export function getMessagesBetween(userA, userB) {
 export function getThreadsForUser(userId) {
   /**
    * Return an array of unique conversation partner IDs
-   * along with the last message for preview.
+  * along with the last message for preview.
    */
   const msgs = getAllMessages().filter(
     (m) => m.fromUserId === userId || m.toUserId === userId
