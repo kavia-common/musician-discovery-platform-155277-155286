@@ -14,6 +14,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePhotoStep from './pages/onboarding/ProfilePhotoStep';
 import DemoImagesStep from './pages/onboarding/DemoImagesStep';
 import DemoVideosStep from './pages/onboarding/DemoVideosStep';
+import CalendarPage from './pages/CalendarPage';
 
 /**
  * Root application component setting theme, routes, and tab navigation.
@@ -96,6 +97,14 @@ function AppShell() {
             element={
               <ProtectedRoute>
                 <AddListingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/calendar"
+            element={
+              <ProtectedRoute>
+                <CalendarPage />
               </ProtectedRoute>
             }
           />
