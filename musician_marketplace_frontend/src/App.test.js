@@ -1,8 +1,22 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import { MemoryRouter } from 'react-router-dom';
+import AppShell from './App';
+import { AuthProvider } from './context/AuthContext';
+import { ListingsProvider } from './context/ListingsContext';
+import { MessagesProvider } from './context/MessagesContext';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders home actions', () => {
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <AuthProvider>
+        <ListingsProvider>
+          <MessagesProvider>
+            <AppShell />
+          </MessagesProvider>
+        </ListingsProvider>
+      </AuthProvider>
+    </MemoryRouter>
+  );
+  const exploreButton = screen.getByText(/explore listings/i);
+  expect(exploreButton).toBeInTheDocument();
 });
