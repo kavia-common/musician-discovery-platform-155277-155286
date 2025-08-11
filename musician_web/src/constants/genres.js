@@ -1,0 +1,28 @@
+export const MUSIC_GENRES = [
+  "Pop",
+  "Rock",
+  "Jazz",
+  "Blues",
+  "Classical",
+  "Hip-Hop",
+  "R&B",
+  "Reggae",
+  "Baila",
+  "Folk",
+  "Country",
+  "EDM",
+  "House",
+  "Techno",
+  "Soul",
+  "Funk",
+  "Metal",
+  "Alternative",
+  "Indie",
+  "Latin",
+  "Fusion",
+  "Sinhala Pop",
+  "Tamil Pop",
+  "Oriental",
+];
+
+export const ARTIST_TYPES = ["Solo", "Duo", "Band"];
