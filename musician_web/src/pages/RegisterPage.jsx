@@ -25,7 +25,13 @@ export default function RegisterPage() {
   const [submitError, setSubmitError] = useState(null);
   const [errors, setErrors] = useState({});
 
-  const cities = useMemo(() => SRI_LANKA_CITIES, []);
+  // Build a stable, deduped, and sorted list to ensure dropdown renders reliably
+  const cities = useMemo(() => {
+    const list = Array.isArray(SRI_LANKA_CITIES) ? SRI_LANKA_CITIES : [];
+    return Array.from(new Set(list.filter(Boolean))).sort((a, b) =>
+      a.localeCompare(b)
+    );
+  }, []);
   const genres = useMemo(() => MUSIC_GENRES, []);
   const artistTypes = useMemo(() => ARTIST_TYPES, []);
 
@@ -171,9 +177,15 @@ export default function RegisterPage() {
                 aria-describedby={errors.location ? 'location-err' : undefined}
               >
                 <option value="">Select a city</option>
-                {cities.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
+                {cities.length === 0 ? (
+                  <option disabled>Loading cities...</option>
+                ) : (
+                  cities.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))
+                )}
               </select>
               {errors.location && (
                 <span id="location-err" style={{ color: '#ff6b6b', fontSize: 12 }}>{errors.location}</span>
